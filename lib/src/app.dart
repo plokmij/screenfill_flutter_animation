@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
 
-class App extends StatelessWidget{
-  Widget build(BuildContext context){
+class App extends StatelessWidget {
+
+  Widget build(BuildContext context) {    
     return MaterialApp(
       title: "Screen Fill",
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: Home(),
+      home: PreHome(),
     );
+  }
+}
+
+class PreHome extends StatelessWidget{
+  Widget build(BuildContext context){
+    final width = MediaQuery.of(context).size.width;
+    return Home(width: width,);
   }
 }

@@ -2,14 +2,23 @@ import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  double width;
+  Home({this.width});
+  _HomeState createState() => _HomeState(
+        width: width,
+      );
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   Animation<double> fillAnimation;
   AnimationController fillController;
+  double width;
+
+  _HomeState({this.width});
 
   initState() {
+    //double width = MediaQuery.of(context).size.width;
+
     super.initState();
 
     fillController = AnimationController(
@@ -19,7 +28,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
     //double endValue = MediaQuery.of(context).size.width;
 
-    fillAnimation = Tween(begin: 50.0, end: 300.0).animate(
+    fillAnimation = Tween(begin: 50.0, end: width).animate(
       CurvedAnimation(
         parent: fillController,
         curve: Curves.decelerate,
@@ -42,9 +51,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   onTap() {
     //print("Tapped");
-    if (fillController.status == AnimationStatus.completed){
+    if (fillController.status == AnimationStatus.completed) {
       fillController.reverse();
-    } else if ( fillController.status == AnimationStatus.dismissed){
+    } else if (fillController.status == AnimationStatus.dismissed) {
       fillController.forward();
     } else {
       fillController.forward();
