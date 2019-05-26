@@ -3,18 +3,25 @@ import 'package:flutter/material.dart';
 class Home extends StatefulWidget {
   @override
   double width;
-  Home({this.width});
+  double height;
+  Home({
+    this.width,
+    this.height,
+  });
   _HomeState createState() => _HomeState(
         width: width,
+        height: height,
+        ratio: width / height,
       );
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   Animation<double> fillAnimation;
   AnimationController fillController;
-  double width;
+  double width, height, ratio;
+  bool fullScreen = false;
 
-  _HomeState({this.width});
+  _HomeState({this.width, this.height, this.ratio});
 
   initState() {
     //double width = MediaQuery.of(context).size.width;
@@ -22,7 +29,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     super.initState();
 
     fillController = AnimationController(
-      duration: Duration(seconds: 1),
+      duration: Duration(milliseconds: 100),
       vsync: this,
     );
 
@@ -40,11 +47,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Animation"),
-      ),
+      appBar: !fullScreen
+          ? AppBar(
+              title: Text("Animation"),
+            )
+          : null,
       body: Center(
-        child: buildAnimation(),
+        child: InkWell(
+          onTap: () {},
+          child: buildAnimation(),
+        ),
       ),
     );
   }
@@ -58,6 +70,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     } else {
       fillController.forward();
     }
+    setState(() {
+      if (fullScreen) {
+        fullScreen = false;
+      } else {
+        fullScreen = true;
+      }
+    });
   }
 
   Widget buildAnimation() {
@@ -69,7 +88,14 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           onTap: onTap,
           child: Container(
             //olor: Colors.blue,
-            height: 50,
+            child: fullScreen
+                ? Center(
+                    child: Text(
+                    "My Fucken Animation",
+                    style: TextStyle(color: Colors.white, fontSize: 23),
+                  ))
+                : null,
+            height: fillAnimation.value / ratio,
             width: fillAnimation.value,
             decoration: BoxDecoration(
               color: Colors.blue,
